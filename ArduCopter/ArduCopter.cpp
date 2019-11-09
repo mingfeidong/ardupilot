@@ -317,33 +317,33 @@ void Copter::update_batt_compass(void)
 void Copter::update_OpenMV(void)
 {
     // simulation
-    //bool sim_openmv_new_data = false;
-    //static uint32_t last_sim_new_data_time_ms = 0;
-    //if(control_mode != GUIDED) {
-        //last_sim_new_data_time_ms = millis();
-        //openmv.cx = 80;
-       // openmv.cy = 60;
-    //} else if (millis()- last_sim_new_data_time_ms < 15000) {
-        //sim_openmv_new_data = true;
-       // openmv.last_frame_ms = millis();
-       // openmv.cx = 1;
-       // openmv.cy = 1;
-    //} else if (millis()- last_sim_new_data_time_ms < 30000) {
-       // sim_openmv_new_data = true;
-       // openmv.last_frame_ms = millis();
-       // openmv.cx = 160;
-       // openmv.cy = 120;
-    //} else {
-       // sim_openmv_new_data = false;
-       // openmv.cx = 80;
-       // openmv.cy = 60;
-    //}
+    /*bool sim_openmv_new_data = false;
+    static uint32_t last_sim_new_data_time_ms = 0;
+    if(control_mode != GUIDED) {
+        last_sim_new_data_time_ms = millis();
+        openmv.cx = 80;
+        openmv.cy = 60;
+    } else if (millis()- last_sim_new_data_time_ms < 15000) {
+        sim_openmv_new_data = true;
+        openmv.last_frame_ms = millis();
+        openmv.cx = 1;
+        openmv.cy = 1;
+    } else if (millis()- last_sim_new_data_time_ms < 30000) {
+        sim_openmv_new_data = true;
+        openmv.last_frame_ms = millis();
+        openmv.cx = 160;
+        openmv.cy = 120;
+    } else {
+        sim_openmv_new_data = false;
+        openmv.cx = 80;
+        openmv.cy = 60;
+    }*/
 
     // end of simulation code
 
     static uint32_t last_set_pos_target_time_ms = 0;
     Vector3f target = Vector3f(0, 0, 0);
-    if(openmv.update() || sim_openmv_new_data) {
+    if(openmv.update() ) {
         Log_Write_OpenMV();
 
         if(control_mode != GUIDED)
