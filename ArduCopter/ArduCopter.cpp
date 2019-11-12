@@ -317,9 +317,9 @@ void Copter::update_batt_compass(void)
 void Copter::update_OpenMV(void)
 {
     // simulation
-    /*bool sim_openmv_new_data = false;
+    bool sim_openmv_new_data = false;
     static uint32_t last_sim_new_data_time_ms = 0;
-    if(control_mode != GUIDED) {
+    if(control_mode != GUIDED_NOGPS) {
         last_sim_new_data_time_ms = millis();
         openmv.cx = 80;
         openmv.cy = 60;
@@ -337,16 +337,16 @@ void Copter::update_OpenMV(void)
         sim_openmv_new_data = false;
         openmv.cx = 80;
         openmv.cy = 60;
-    }*/
+    }
 
     // end of simulation code
 
     static uint32_t last_set_pos_target_time_ms = 0;
     Vector3f target = Vector3f(0, 0, 0);
-    if(openmv.update() ) {
+    if(openmv.update() || sim_openmv_new_data) {
         Log_Write_OpenMV();
 
-        if(control_mode != GUIDED)
+        if(control_mode != GUIDED_NOGPS)
             return;
 
         int16_t target_body_frame_y = (int16_t)openmv.cx - 80;  // QQVGA 160 * 120
@@ -361,7 +361,7 @@ void Copter::update_OpenMV(void)
         const Matrix3f &rotMat = copter.ahrs.get_rotation_body_to_ned();
         v = rotMat * v;
 
-        target = v * 10000.0f;  // distance 100m
+        target = v * 500.0f;  // distance 5m
 
         target.z = -target.z;  // ned to neu
 
